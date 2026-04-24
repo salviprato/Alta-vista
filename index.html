@@ -310,6 +310,41 @@
     const btnCancelarEdicion = document.getElementById('btn-cancelar-edicion');
     const inputIdEditando = document.getElementById('id-gasto-editando');
 
+    // FALTABAN ESTAS REFERENCIAS Y EVENTOS:
+    const btnTerminarObra = document.getElementById('btn-terminar-obra');
+    const btnBorrarObra = document.getElementById('btn-borrar-obra');
+    const btnRestaurarObra = document.getElementById('btn-restaurar-obra');
+
+    btnTerminarObra.addEventListener('click', async () => {
+        if(confirm("¿Archivar esta etapa? No se podrán cargar más gastos.")){
+            await updateDoc(doc(db, "obras", obraActivaId), { estado: 'terminada' });
+            cargarInterfaz(obraActivaId); 
+            document.getElementById('acordeon-historial').setAttribute('open', '');
+        }
+    });
+
+    btnRestaurarObra.addEventListener('click', async () => {
+        await updateDoc(doc(db, "obras", obraActivaId), { estado: 'activa' });
+        selectObra.value = obraActivaId; 
+        cargarInterfaz(obraActivaId);
+    });
+
+    btnBorrarObra.addEventListener('click', async () => {
+        if(confirm("Se borrará la etapa y todos sus gastos de forma permanente. ¿Confirmar?")){
+            try {
+                // Primero borramos todos los gastos asociados a esta etapa
+                const qBorrar = query(collection(db, "gastos"), where("obraId", "==", obraActivaId));
+                const snapshotBorrar = await getDocs(qBorrar);
+                snapshotBorrar.forEach(async (docGasto) => { await deleteDoc(docGasto.ref); });
+                
+                // Luego borramos la etapa en sí
+                await deleteDoc(doc(db, "obras", obraActivaId));
+                panelGastos.style.display = 'none';
+                obraActivaId = null;
+            } catch (error) { console.error("Error al borrar:", error); }
+        }
+    });
+
     // Inicialización
     function getTodayYYYYMMDD() {
         const d = new Date();
