@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión por Etapas</title>
+    <title>Gestión de Gastos</title>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -14,16 +14,14 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
         :root {
-            --bg-page: #f8fafc;
-            --bg-card: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-            --primary: #0f172a;
-            --primary-hover: #334155;
-            --accent: #2563eb;
-            --danger: #ef4444;
-            --success: #10b981;
+            --bg-page: #ffffff;
+            --bg-card: #f5f5f5;
+            --text-main: #000000;
+            --text-muted: #555555;
+            --border: #cccccc;
+            --primary: #000000;
+            --primary-hover: #333333;
+            --accent: #000000;
             
             --radius-md: 8px;
             --radius-lg: 12px;
@@ -31,134 +29,75 @@
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
         }
 
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-page); color: var(--text-main); margin: 0; padding: 40px 20px; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-page); color: var(--text-main); margin: 0; padding: 40px 20px; filter: grayscale(100%); }
         .container { max-width: 1200px; margin: 0 auto; }
         h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 30px; letter-spacing: -0.02em; }
         h2 { font-size: 1.25rem; font-weight: 600; margin: 0; }
         h3 { font-size: 1rem; font-weight: 600; color: var(--text-main); margin-bottom: 0; }
 
-        details { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 24px; box-shadow: var(--shadow-sm); transition: box-shadow 0.2s; }
-        details:hover { box-shadow: var(--shadow-md); }
-        summary { padding: 20px 24px; font-weight: 600; font-size: 1.05rem; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; color: var(--text-main); }
-        summary::-webkit-details-marker { display: none; }
-        summary::after { content: '+'; font-size: 1.2rem; font-weight: 400; color: var(--text-muted); }
-        details[open] summary::after { content: '−'; }
-        .accordion-content { padding: 0 24px 24px 24px; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-
         .form-group { margin-bottom: 16px; position: relative; }
         label { display: block; margin-bottom: 6px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
         input, select { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius-md); background-color: var(--bg-page); font-family: inherit; font-size: 0.95rem; color: var(--text-main); transition: all 0.2s ease; box-sizing: border-box; }
-        input:focus, select:focus { outline: none; border-color: var(--accent); background-color: #fff; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        input:focus, select:focus { outline: none; border-color: var(--accent); background-color: #fff; box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1); }
         
         .form-horizontal { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; width: 100%; }
         .form-horizontal .form-group { flex: 1; min-width: 140px; margin-bottom: 0; }
         
         .moneda-symbol { position: absolute; left: 14px; top: 34px; font-weight: 500; color: var(--text-muted); }
         .input-moneda { padding-left: 35px; }
-        .cotizacion-info { position: absolute; font-size: 0.7rem; color: var(--text-muted); right: 0; top: 0; }
 
         button { background-color: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: var(--radius-md); cursor: pointer; font-weight: 500; font-size: 0.9rem; transition: all 0.2s; font-family: inherit; }
         button:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
-        .btn-crear { background-color: var(--primary); width: 100%; }
         .btn-submit { background-color: var(--accent); white-space: nowrap; }
-        .btn-submit:hover { background-color: #1d4ed8; }
         
-        .btn-text { background: none; color: var(--text-muted); padding: 8px 12px; font-size: 0.85rem; border: 1px solid transparent; }
-        .btn-text:hover { background: #f1f5f9; color: var(--text-main); transform: none; }
-        .btn-danger-text { background: none; color: var(--danger); opacity: 0.7; padding: 8px 16px; }
-        .btn-danger-text:hover { background: #fee2e2; opacity: 1; transform: none; }
+        .btn-text { background: none; color: var(--text-main); padding: 8px 12px; font-size: 0.85rem; border: 1px solid var(--border); border-radius: var(--radius-md); }
+        .btn-text:hover { background: #eeeeee; transform: none; }
 
-        #panel-gastos { display: none; background: var(--bg-card); border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border); margin-top: 30px; }
+        #panel-gastos { background: var(--bg-page); border-radius: var(--radius-lg); margin-top: 10px; }
         .header-obra { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 20px; }
 
-        .badge { padding: 4px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
-        .estado-activa { background-color: #dcfce7; color: #166534; }
-        .estado-terminada { background-color: #f1f5f9; color: #475569; }
-        
-        /* Colores dinámicos para badges */
-        .cat-generic { background-color: #f1f5f9; color: #475569; }
-        .cat-primary { background-color: #e0e7ff; color: #3730a3; }
-        .cat-accent { background-color: #ccfbf1; color: #115e59; }
+        .badge { padding: 4px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; border: 1px solid var(--border); background-color: #eeeeee; color: #000000; }
 
-        .participantes-section { background: var(--bg-page); padding: 15px 20px; border-radius: var(--radius-md); margin-bottom: 30px; border: 1px dashed var(--border); }
+        .participantes-section { background: var(--bg-card); padding: 15px 20px; border-radius: var(--radius-md); margin-bottom: 30px; border: 1px dashed var(--border); }
 
         .tabla-contenedor { overflow-x: auto; margin-top: 20px; }
         table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
         th { padding: 16px; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border); font-weight: 600; }
-        td { padding: 16px; border-bottom: 1px solid #f1f5f9; color: var(--text-main); }
-        .pagador-text { font-size: 0.85rem; font-weight: 500; color: #3b82f6; }
+        td { padding: 16px; border-bottom: 1px solid var(--bg-card); color: var(--text-main); }
+        .pagador-text { font-size: 0.85rem; font-weight: 600; color: #000000; }
+        .td-precio { font-weight: 700; font-variant-numeric: tabular-nums; }
 
         .totales-footer { display: flex; justify-content: flex-end; gap: 40px; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
         .total-box { text-align: right; }
         .total-box span { display: block; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
         .total-box strong { font-size: 1.5rem; color: var(--primary); font-variant-numeric: tabular-nums; }
 
-        .grafico-container { position: relative; height: 250px; width: 100%; margin: 10px 0; }
+        .grafico-container { position: relative; height: 250px; width: 100%; margin: 30px 0; padding: 20px; background: var(--bg-card); border-radius: var(--radius-md); border: 1px solid var(--border); box-sizing: border-box;}
         
-        .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; }
-        .toolbar-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .export-toolbar { background: var(--bg-card); padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--border); margin: 30px 0 20px 0; }
+        .export-controls { display: flex; flex-wrap: wrap; gap: 15px; align-items: flex-end; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Tus Etapas</h1>
-
-    <details open id="acordeon-activas">
-        <summary>Etapas en curso</summary>
-        <div class="accordion-content grid-2">
-            <div>
-                <label for="select-obra">Seleccionar Etapa</label>
-                <select id="select-obra">
-                    <option value="">Buscar etapa activa...</option>
-                </select>
-            </div>
-            <div>
-                <label for="nombre-obra">Crear Nueva Etapa</label>
-                <div style="display: flex; gap: 8px;">
-                    <input type="text" id="nombre-obra" placeholder="Nombre de la etapa">
-                    <button id="btn-crear-obra" class="btn-crear">Crear</button>
-                </div>
-            </div>
-        </div>
-    </details>
-
-    <details id="acordeon-historial">
-        <summary>Historial de Etapas (Terminadas)</summary>
-        <div class="accordion-content tabla-contenedor" style="margin-top: -10px;">
-            <table>
-                <tbody id="lista-obras-terminadas">
-                </tbody>
-            </table>
-        </div>
-    </details>
-
-    <div id="panel-gastos">
+    <div id="panel-gastos" style="display: none;">
         <div class="header-obra">
-            <div style="display: flex; align-items: center; gap: 16px;">
-                <h2 id="titulo-obra-activa"></h2>
-                <span id="badge-estado-obra" class="badge"></span>
-            </div>
-            <div style="display: flex; gap: 8px;">
-                <button id="btn-restaurar-obra" class="btn-text" style="display: none;">Restaurar</button>
-                <button id="btn-terminar-obra" class="btn-text">Marcar como terminada</button>
-                <button id="btn-borrar-obra" class="btn-danger-text">Eliminar</button>
-            </div>
+            <h1 id="titulo-obra-activa" style="margin: 0;">Cargando...</h1>
         </div>
 
         <div class="participantes-section" id="seccion-participantes">
-            <label>Participantes de esta etapa (Quienes pagan)</label>
+            <label>Participantes (Quienes pagan)</label>
             <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
                 <div id="lista-badges-participantes" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
                 <div id="controles-add-participante" style="display: flex; gap: 8px; align-items: center;">
                     <input type="text" id="nuevo-participante" placeholder="Nombre (Ej: Socio 1)" style="padding: 8px 12px; font-size: 0.85rem; width: 160px; margin: 0;">
-                    <button type="button" id="btn-add-participante" class="btn-text" style="background: white; border-color: var(--border);">+ Añadir</button>
+                    <button type="button" id="btn-add-participante" class="btn-text">+ Añadir</button>
                 </div>
             </div>
         </div>
 
-        <div id="seccion-formulario-gastos" style="background: var(--bg-page); padding: 24px; border-radius: var(--radius-md); margin-bottom: 30px;">
+        <div id="seccion-formulario-gastos" style="background: var(--bg-card); padding: 24px; border-radius: var(--radius-md); margin-bottom: 30px; border: 1px solid var(--border);">
             <form id="form-gasto" style="display: flex; flex-direction: column; gap: 16px;">
                 <input type="hidden" id="id-gasto-editando" value="">
                 
@@ -196,18 +135,12 @@
 
                 <div class="form-horizontal">
                     <div class="form-group" style="flex: 1;">
-                        <label for="precio-gasto-ars">ARS</label>
+                        <label for="precio-gasto-ars">Monto (ARS)</label>
                         <span class="moneda-symbol">$</span>
                         <input type="text" id="precio-gasto-ars" class="input-moneda" required placeholder="0,00">
                     </div>
-                    
-                    <div class="form-group" style="flex: 1;">
-                        <label for="precio-gasto-usd">USD <span id="info-cotizacion" class="cotizacion-info">...</span></label>
-                        <span class="moneda-symbol">U$D</span>
-                        <input type="text" id="precio-gasto-usd" class="input-moneda" required placeholder="0,00">
-                    </div>
 
-                    <div class="form-group" style="flex: 2.5;">
+                    <div class="form-group" style="flex: 3;">
                         <label for="detalle-gasto">Descripción</label>
                         <input type="text" id="detalle-gasto" required placeholder="Detalle del gasto">
                     </div>
@@ -220,26 +153,34 @@
             </form>
         </div>
 
-        <details>
-            <summary>Ver Evolución de Inversión (Gráfico)</summary>
-            <div class="accordion-content">
-                <div class="grafico-container">
-                    <canvas id="graficoGastos"></canvas>
-                </div>
-            </div>
-        </details>
+        <div class="grafico-container">
+            <canvas id="graficoGastos"></canvas>
+        </div>
 
-        <div class="toolbar" style="margin-top: 30px;">
-            <h3>Registro de gastos</h3>
-            <div class="toolbar-actions">
-                <button id="btn-exportar-pdf" class="btn-text btn-export-pdf">↓ PDF</button>
-                <button id="btn-exportar-excel" class="btn-text btn-export-excel">↓ Excel</button>
-                <select id="orden-gastos" style="width: auto; padding: 8px;">
-                    <option value="fecha_desc">Más recientes</option>
-                    <option value="fecha_asc">Más antiguos</option>
-                    <option value="valor_desc">Mayor valor</option>
-                    <option value="valor_asc">Menor valor</option>
-                </select>
+        <div class="export-toolbar">
+            <h3>Exportar Registro</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0;">Seleccione el rango de fechas que desea incluir en la descarga.</p>
+            <div class="export-controls">
+                <div class="form-group" style="margin: 0;">
+                    <label>Desde:</label>
+                    <input type="date" id="exportar-desde">
+                </div>
+                <div class="form-group" style="margin: 0;">
+                    <label>Hasta:</label>
+                    <input type="date" id="exportar-hasta">
+                </div>
+                <button id="btn-exportar-pdf" class="btn-text">Descargar PDF</button>
+                <button id="btn-exportar-excel" class="btn-text">Descargar Excel</button>
+
+                <div class="form-group" style="margin: 0; margin-left: auto;">
+                    <label>Ordenar listado por:</label>
+                    <select id="orden-gastos" style="width: auto;">
+                        <option value="fecha_desc">Más recientes</option>
+                        <option value="fecha_asc">Más antiguos</option>
+                        <option value="valor_desc">Mayor valor</option>
+                        <option value="valor_asc">Menor valor</option>
+                    </select>
+                </div>
             </div>
         </div>
 
@@ -251,8 +192,7 @@
                         <th>Rubro</th>
                         <th>Descripción</th>
                         <th>Pagado por</th>
-                        <th>ARS</th>
-                        <th>USD</th>
+                        <th>Monto (ARS)</th>
                         <th id="columna-acciones" style="text-align: right;"></th>
                     </tr>
                 </thead>
@@ -262,11 +202,7 @@
 
         <div class="totales-footer">
             <div class="total-box">
-                <span>Inversión Total (USD)</span>
-                <strong style="color: var(--text-muted);">U$D <span id="total-gastos-usd">0.00</span></strong>
-            </div>
-            <div class="total-box">
-                <span>Inversión Total (ARS)</span>
+                <span>Inversión Total Registrada</span>
                 <strong>$<span id="total-gastos-ars">0.00</span></strong>
             </div>
         </div>
@@ -295,73 +231,22 @@
     let chartInstance = null; 
     let gastosActualesEnMemoria = [];
     let gastosVisuales = []; 
-    let obrasMemoria = {}; 
-    let tasaDolarOficial = 1000; 
 
     // Referencias DOM
-    const selectObra = document.getElementById('select-obra');
     const panelGastos = document.getElementById('panel-gastos');
     const tituloObraActiva = document.getElementById('titulo-obra-activa');
     const formGasto = document.getElementById('form-gasto');
     const inputArs = document.getElementById('precio-gasto-ars');
-    const inputUsd = document.getElementById('precio-gasto-usd');
     const selectOrden = document.getElementById('orden-gastos');
     const btnSubmitGasto = document.getElementById('btn-submit-gasto');
     const btnCancelarEdicion = document.getElementById('btn-cancelar-edicion');
     const inputIdEditando = document.getElementById('id-gasto-editando');
 
-    // FALTABAN ESTAS REFERENCIAS Y EVENTOS:
-    const btnTerminarObra = document.getElementById('btn-terminar-obra');
-    const btnBorrarObra = document.getElementById('btn-borrar-obra');
-    const btnRestaurarObra = document.getElementById('btn-restaurar-obra');
-
-    btnTerminarObra.addEventListener('click', async () => {
-        if(confirm("¿Archivar esta etapa? No se podrán cargar más gastos.")){
-            await updateDoc(doc(db, "obras", obraActivaId), { estado: 'terminada' });
-            cargarInterfaz(obraActivaId); 
-            document.getElementById('acordeon-historial').setAttribute('open', '');
-        }
-    });
-
-    btnRestaurarObra.addEventListener('click', async () => {
-        await updateDoc(doc(db, "obras", obraActivaId), { estado: 'activa' });
-        selectObra.value = obraActivaId; 
-        cargarInterfaz(obraActivaId);
-    });
-
-    btnBorrarObra.addEventListener('click', async () => {
-        if(confirm("Se borrará la etapa y todos sus gastos de forma permanente. ¿Confirmar?")){
-            try {
-                // Primero borramos todos los gastos asociados a esta etapa
-                const qBorrar = query(collection(db, "gastos"), where("obraId", "==", obraActivaId));
-                const snapshotBorrar = await getDocs(qBorrar);
-                snapshotBorrar.forEach(async (docGasto) => { await deleteDoc(docGasto.ref); });
-                
-                // Luego borramos la etapa en sí
-                await deleteDoc(doc(db, "obras", obraActivaId));
-                panelGastos.style.display = 'none';
-                obraActivaId = null;
-            } catch (error) { console.error("Error al borrar:", error); }
-        }
-    });
-
-    // Inicialización
     function getTodayYYYYMMDD() {
         const d = new Date();
         return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     }
 
-    async function obtenerCotizacionDolar() {
-        try {
-            const res = await fetch('https://dolarapi.com/v1/dolares/oficial');
-            const data = await res.json();
-            tasaDolarOficial = data.venta;
-            document.getElementById('info-cotizacion').textContent = `Ref: $${tasaDolarOficial}`;
-        } catch (e) { document.getElementById('info-cotizacion').textContent = `Ref: $1000`; }
-    }
-    obtenerCotizacionDolar();
-
-    // Formateo de moneda
     function limpiarNumero(s) { return parseFloat(s.replace(/\./g, '').replace(',', '.')) || 0; }
     function formatearConPuntos(n) {
         let p = n.toFixed(2).replace('.', ',').split(',');
@@ -374,87 +259,51 @@
         let p = v.split(',');
         p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         this.value = p.length > 1 ? p[0] + ',' + p[1].substring(0, 2) : p[0];
-        inputUsd.value = formatearConPuntos(limpiarNumero(this.value) / tasaDolarOficial);
     });
 
-    inputUsd.addEventListener('input', function() {
-        let v = this.value.replace(/[^\d,]/g, '');
-        let p = v.split(',');
-        p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        this.value = p.length > 1 ? p[0] + ',' + p[1].substring(0, 2) : p[0];
-        inputArs.value = formatearConPuntos(limpiarNumero(this.value) * tasaDolarOficial);
+    // Auto-Cargar la etapa única (o la primera disponible)
+    const qObras = query(collection(db, "obras"), orderBy("fechaCreacion", "desc"));
+    getDocs(qObras).then((snap) => {
+        if (!snap.empty) {
+            const docData = snap.docs[0];
+            obraActivaId = docData.id;
+            datosObraActiva = docData.data();
+            
+            tituloObraActiva.textContent = datosObraActiva.nombre;
+            panelGastos.style.display = 'block';
+            
+            renderizarParticipantes();
+            resetearFormulario();
+            escucharGastos(obraActivaId);
+        } else {
+            tituloObraActiva.textContent = "No hay etapas creadas en la base de datos.";
+            panelGastos.style.display = 'block';
+        }
     });
-
-    // CRUD Etapas
-    onSnapshot(query(collection(db, "obras"), orderBy("fechaCreacion", "desc")), (snap) => {
-        const actual = selectObra.value;
-        selectObra.innerHTML = '<option value="">Buscar etapa activa...</option>';
-        document.getElementById('lista-obras-terminadas').innerHTML = '';
-        obrasMemoria = {};
-        
-        snap.forEach(docSnap => {
-            const d = docSnap.data();
-            const id = docSnap.id;
-            obrasMemoria[id] = d;
-            if((d.estado || 'activa') === 'activa'){
-                const opt = document.createElement('option');
-                opt.value = id; opt.textContent = d.nombre;
-                selectObra.appendChild(opt);
-            } else {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `<td><strong>${d.nombre}</strong></td><td style="text-align:right"><button class="btn-text" onclick="window.cargarObraDesdeHistorial('${id}')">Ver →</button></td>`;
-                document.getElementById('lista-obras-terminadas').appendChild(tr);
-            }
-        });
-        if(actual) selectObra.value = actual;
-    });
-
-    document.getElementById('btn-crear-obra').addEventListener('click', async () => {
-        const inp = document.getElementById('nombre-obra');
-        if(!inp.value.trim()) return;
-        const ref = await addDoc(collection(db, "obras"), { nombre: inp.value.trim(), estado: 'activa', participantes: [], fechaCreacion: serverTimestamp() });
-        inp.value = ''; selectObra.value = ref.id; selectObra.dispatchEvent(new Event('change'));
-    });
-
-    selectObra.addEventListener('change', (e) => e.target.value ? cargarInterfaz(e.target.value) : panelGastos.style.display = 'none');
-
-    window.cargarObraDesdeHistorial = id => { selectObra.value = ""; cargarInterfaz(id); };
-
-    function cargarInterfaz(id) {
-        obraActivaId = id; datosObraActiva = obrasMemoria[id];
-        if (unsubscribeGastos) unsubscribeGastos();
-        tituloObraActiva.textContent = datosObraActiva.nombre;
-        panelGastos.style.display = 'block';
-        
-        renderizarParticipantes();
-        const term = datosObraActiva.estado === 'terminada';
-        document.getElementById('badge-estado-obra').textContent = term ? "Terminada" : "Activa";
-        document.getElementById('badge-estado-obra').className = "badge " + (term ? "estado-terminada" : "estado-activa");
-        document.getElementById('seccion-formulario-gastos').style.display = term ? 'none' : 'block';
-        document.getElementById('controles-add-participante').style.display = term ? 'none' : 'flex';
-        document.getElementById('btn-terminar-obra').style.display = term ? 'none' : 'inline-block';
-        document.getElementById('btn-restaurar-obra').style.display = term ? 'inline-block' : 'none';
-        
-        resetearFormulario();
-        escucharGastos(id);
-    }
 
     // Participantes
     document.getElementById('btn-add-participante').addEventListener('click', async () => {
         const inp = document.getElementById('nuevo-participante');
         if(!inp.value.trim() || !obraActivaId) return;
         await updateDoc(doc(db, "obras", obraActivaId), { participantes: arrayUnion(inp.value.trim()) });
+        
+        datosObraActiva.participantes = datosObraActiva.participantes || [];
+        if (!datosObraActiva.participantes.includes(inp.value.trim())) {
+            datosObraActiva.participantes.push(inp.value.trim());
+        }
+        renderizarParticipantes();
         inp.value = '';
     });
 
     function renderizarParticipantes() {
+        if (!datosObraActiva) return;
         const parts = datosObraActiva.participantes || [];
         const cont = document.getElementById('lista-badges-participantes');
         const sel = document.getElementById('pagador-gasto');
         cont.innerHTML = parts.length ? '' : '<span style="font-size:0.8rem;color:var(--text-muted)">Sin asignar</span>';
         sel.innerHTML = parts.length ? '' : '<option value="">Añadí participantes arriba</option>';
         parts.forEach(p => {
-            const b = document.createElement('span'); b.className = 'badge cat-generic'; b.textContent = p; cont.appendChild(b);
+            const b = document.createElement('span'); b.className = 'badge'; b.textContent = p; cont.appendChild(b);
             const o = document.createElement('option'); o.value = p; o.textContent = p; sel.appendChild(o);
         });
     }
@@ -467,9 +316,11 @@
         });
     }
 
+    selectOrden.addEventListener('change', renderizarTablaYGrafico);
+
     function renderizarTablaYGrafico() {
         const lista = document.getElementById('lista-gastos');
-        let tArs = 0, tUsd = 0; lista.innerHTML = '';
+        let tArs = 0; lista.innerHTML = '';
         const gFechas = {};
         const orden = selectOrden.value;
 
@@ -482,26 +333,31 @@
         });
 
         gastosVisuales.forEach(g => {
-            tArs += g.precio; let u = g.precio / g.cotizacionDolarGuardada; tUsd += u;
+            tArs += g.precio;
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td style="color:var(--text-muted)">${g.fechaStr}</td>
-                <td><span class="badge cat-primary">${g.categoria}</span></td>
+                <td><span class="badge">${g.categoria}</span></td>
                 <td>${g.detalle}</td>
                 <td class="pagador-text">${g.pagador || '-'}</td>
-                <td class="td-precio">$${g.precio.toLocaleString('es-AR')}</td>
-                <td class="td-usd">U$D ${u.toLocaleString('es-AR')}</td>
+                <td class="td-precio">$${g.precio.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</td>
                 <td style="text-align:right">
-                    ${datosObraActiva.estado !== 'terminada' ? `<button class="btn-text" onclick="window.prepararEdicion('${g.id}','${g.fechaIso}','${g.categoria}','${g.pagador}',${g.precio},'${g.detalle.replace(/'/g,"\\'")}')">Editar</button>` : ''}
+                    <button class="btn-text" onclick="window.prepararEdicion('${g.id}','${g.fechaIso}','${g.categoria}','${g.pagador}',${g.precio},'${g.detalle.replace(/'/g,"\\'")}')">Editar</button>
+                    <button class="btn-text" style="color: #000000; margin-left: 5px;" onclick="window.borrarGasto('${g.id}')">X</button>
                 </td>`;
             lista.appendChild(tr);
             gFechas[g.fechaStr] = (gFechas[g.fechaStr] || 0) + g.precio;
         });
 
-        document.getElementById('total-gastos-ars').textContent = tArs.toLocaleString('es-AR');
-        document.getElementById('total-gastos-usd').textContent = tUsd.toLocaleString('es-AR');
+        document.getElementById('total-gastos-ars').textContent = tArs.toLocaleString('es-AR', { minimumFractionDigits: 2 });
         actualizarGrafico(gFechas);
     }
+
+    window.borrarGasto = async function(idGasto) {
+        if(confirm("¿Seguro que deseas eliminar este gasto?")) {
+            await deleteDoc(doc(db, "gastos", idGasto));
+        }
+    };
 
     formGasto.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -513,7 +369,6 @@
             categoria: document.getElementById('categoria-gasto').value,
             pagador: document.getElementById('pagador-gasto').value,
             precio: limpiarNumero(inputArs.value),
-            cotizacionDolarGuardada: limpiarNumero(inputArs.value) / limpiarNumero(inputUsd.value),
             detalle: document.getElementById('detalle-gasto').value.trim()
         };
         idEdit ? await updateDoc(doc(db, "gastos", idEdit), data) : await addDoc(collection(db, "gastos"), { ...data, timestamp: serverTimestamp() });
@@ -526,10 +381,10 @@
         document.getElementById('categoria-gasto').value = c;
         document.getElementById('pagador-gasto').value = p;
         inputArs.value = formatearConPuntos(pr);
-        inputUsd.value = formatearConPuntos(pr / tasaDolarOficial);
         document.getElementById('detalle-gasto').value = d;
         btnSubmitGasto.textContent = "Guardar Cambios";
         btnCancelarEdicion.style.display = "inline-block";
+        document.getElementById('seccion-formulario-gastos').scrollIntoView({ behavior: 'smooth' });
     };
 
     function resetearFormulario() {
@@ -541,25 +396,95 @@
 
     btnCancelarEdicion.onclick = resetearFormulario;
 
-    // Gráfico
+    // Gráfico Blanco y Negro
     function actualizarGrafico(datos) {
         const ctx = document.getElementById('graficoGastos').getContext('2d');
         if (chartInstance) chartInstance.destroy();
-        const labs = Object.keys(datos).sort();
+        const labs = Object.keys(datos).sort((a, b) => new Date(a.split('/').reverse().join('-')) - new Date(b.split('/').reverse().join('-')));
+        
+        let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(0, 0, 0, 0.15)');   
+        gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
         chartInstance = new Chart(ctx, {
             type: 'line',
-            data: { labels: labs, datasets: [{ label: 'Inversión', data: labs.map(l => datos[l]), borderColor: '#2563eb', tension: 0.4, fill: true, backgroundColor: 'rgba(37,99,235,0.1)' }] },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            data: { labels: labs, datasets: [{ label: 'Inversión Diaria', data: labs.map(l => datos[l]), borderColor: '#000000', pointBackgroundColor: '#ffffff', pointBorderColor: '#000000', tension: 0.4, fill: true, backgroundColor: gradient }] },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
         });
     }
 
-    // Exportación
+    // Exportación por Fecha
+    function obtenerGastosFiltrados() {
+        const desde = document.getElementById('exportar-desde').value;
+        const hasta = document.getElementById('exportar-hasta').value;
+
+        if (!desde || !hasta) {
+            alert("Por favor, selecciona una fecha de 'Desde' y 'Hasta' para poder descargar.");
+            return null;
+        }
+        if (desde > hasta) {
+            alert("La fecha 'Desde' no puede ser mayor a la fecha 'Hasta'.");
+            return null;
+        }
+
+        const gastosFiltrados = gastosVisuales.filter(g => g.fechaIso >= desde && g.fechaIso <= hasta);
+        
+        if (gastosFiltrados.length === 0) {
+            alert("No hay gastos registrados en este rango de fechas.");
+            return null;
+        }
+        
+        return gastosFiltrados;
+    }
+
     document.getElementById('btn-exportar-pdf').onclick = () => {
+        const datos = obtenerGastosFiltrados();
+        if (!datos) return;
+
         const { jsPDF } = window.jspdf; const doc = new jsPDF();
-        doc.text(`Reporte Etapa: ${datosObraActiva.nombre}`, 14, 20);
-        const rows = gastosVisuales.map(g => [g.fechaStr, g.categoria, g.detalle, g.pagador, g.precio.toLocaleString(), (g.precio/g.cotizacionDolarGuardada).toLocaleString()]);
-        doc.autoTable({ head: [["Fecha", "Rubro", "Descripción", "Pagador", "ARS", "USD"]], body: rows, startY: 30 });
-        doc.save(`Reporte_${datosObraActiva.nombre}.pdf`);
+        const desdeStr = document.getElementById('exportar-desde').value.split('-').reverse().join('/');
+        const hastaStr = document.getElementById('exportar-hasta').value.split('-').reverse().join('/');
+
+        doc.setFontSize(16); doc.text(`Reporte: ${datosObraActiva.nombre}`, 14, 20);
+        doc.setFontSize(11); doc.setTextColor(100); doc.text(`Período: ${desdeStr} al ${hastaStr}`, 14, 28);
+        
+        let suma = 0;
+        const rows = datos.map(g => {
+            suma += g.precio;
+            return [g.fechaStr, g.categoria, g.detalle, g.pagador, "$" + g.precio.toLocaleString('es-AR', { minimumFractionDigits: 2 })];
+        });
+
+        doc.autoTable({ 
+            head: [["Fecha", "Rubro", "Descripción", "Pagador", "Monto (ARS)"]], 
+            body: rows, 
+            startY: 35,
+            headStyles: { fillColor: [0, 0, 0] },
+            columnStyles: { 4: { halign: 'right' } }
+        });
+
+        doc.setFontSize(12); doc.setTextColor(0);
+        doc.text(`Total en este período: $${suma.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`, 14, doc.lastAutoTable.finalY + 10);
+        doc.save(`Reporte_${desdeStr.replace(/\//g,'-')}_al_${hastaStr.replace(/\//g,'-')}.pdf`);
+    };
+
+    document.getElementById('btn-exportar-excel').onclick = () => {
+        const datos = obtenerGastosFiltrados();
+        if (!datos) return;
+
+        const desdeStr = document.getElementById('exportar-desde').value.split('-').reverse().join('/');
+        const hastaStr = document.getElementById('exportar-hasta').value.split('-').reverse().join('/');
+
+        const datosExcel = datos.map(g => ({ 
+            "Fecha": g.fechaStr, "Rubro": g.categoria, 
+            "Descripción": g.detalle, "Pagado por": g.pagador || '-', 
+            "Monto (ARS)": g.precio 
+        }));
+
+        const worksheet = XLSX.utils.json_to_sheet(datosExcel);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Gastos");
+        worksheet['!cols'] = [ { wch: 12 }, { wch: 18 }, { wch: 30 }, { wch: 18 }, { wch: 15 } ];
+        XLSX.writeFile(workbook, `Gastos_${desdeStr.replace(/\//g,'-')}_al_${hastaStr.replace(/\//g,'-')}.xlsx`);
     };
 
 </script>
