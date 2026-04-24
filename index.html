@@ -303,20 +303,22 @@
 </div>
 
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, onSnapshot, query, where, orderBy, serverTimestamp, doc, updateDoc, deleteDoc, getDocs, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCWtvTrQ11b7iWF_5HyZu9SKCmBMnV1f9M",
-      authDomain: "calculos-a3461.firebaseapp.com",
-      projectId: "calculos-a3461",
-      storageBucket: "calculos-a3461.firebasestorage.app",
-      messagingSenderId: "319504557142",
-      appId: "1:319504557142:web:3211c1473c73d1080cc7f7"
-    };
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyC9oJsoZoP65eBc2yRE9Kqe2zBSaZRk6WM",
+    authDomain: "alta-vista-55b53.firebaseapp.com",
+    projectId: "alta-vista-55b53",
+    storageBucket: "alta-vista-55b53.firebasestorage.app",
+    messagingSenderId: "825824913014",
+    appId: "1:825824913014:web:c5293b12d47e2c74266157"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+  const app = initializeApp(firebaseConfig);
 
     let obraActivaId = null;
     let datosObraActiva = null; 
